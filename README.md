@@ -1,13 +1,13 @@
 # Prosperous Universe MVP
 
-A Next.js application for managing inventory, calculating burn rates, and visualizing profit data for Prosperous Universe.
+A Next.js application for showing user inventory, calculating burn rate and materials needed, and displaying profit charts.
 
 ## Tech Stack
 
 - **Framework**: Next.js 15.5.4 with App Router
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS v4
-- **Code Quality**: ESLint + Prettier
+- **Linting**: ESLint + Prettier
 - **Git Hooks**: Husky + lint-staged
 - **CI/CD**: GitHub Actions + Vercel
 
@@ -15,8 +15,8 @@ A Next.js application for managing inventory, calculating burn rates, and visual
 
 ### Prerequisites
 
-- Node.js 20.x or higher
-- npm or yarn
+- Node.js 20.x or later
+- npm (comes with Node.js)
 
 ### Installation
 
@@ -26,6 +26,8 @@ npm install
 
 ### Development
 
+Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -34,48 +36,60 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Available Scripts
 
-- `npm run dev` - Start development server
+- `npm run dev` - Start development server with Turbopack
 - `npm run build` - Build for production
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
-- `npm run lint:fix` - Fix ESLint issues
+- `npm run lint:fix` - Run ESLint with auto-fix
 - `npm run format` - Format code with Prettier
 - `npm run format:check` - Check code formatting
-- `npm run type-check` - Run TypeScript type checking
+- `npm test` - Run tests (placeholder for now)
+
+## Code Quality
+
+### Pre-commit Hooks
+
+This project uses Husky and lint-staged to ensure code quality. Before each commit:
+
+- ESLint will check for code issues
+- Prettier will format the code
+
+### CI/CD Pipeline
+
+GitHub Actions runs on every push and pull request to `main` and `develop` branches:
+
+- Linting checks
+- Type checking
+- Build verification
+- Test execution (when tests are added)
+
+### Vercel Deployment
+
+The project is configured for deployment on Vercel:
+
+- Automatic preview deployments for pull requests
+- Production deployments on merge to main branch
 
 ## Project Structure
 
 ```
+prosperous-universe-mvp/
 ├── app/                # Next.js App Router pages and components
 ├── public/             # Static assets
 ├── .github/            # GitHub Actions workflows
 ├── .husky/             # Git hooks
-├── tailwind.config.js  # Tailwind CSS configuration
+├── eslint.config.js    # ESLint configuration
+├── next.config.ts      # Next.js configuration
+├── tailwind.config.ts  # Tailwind CSS configuration
 ├── tsconfig.json       # TypeScript configuration
-├── .eslintrc.json      # ESLint configuration
-├── .prettierrc.json    # Prettier configuration
 └── vercel.json         # Vercel deployment configuration
 ```
-
-## Deployment
-
-This project is configured for automatic deployment to Vercel:
-
-- **Production**: Pushes to `main` branch deploy to production
-- **Preview**: Pull requests create preview deployments
-
-## Features (Planned)
-
-- [ ] Display user's current inventory
-- [ ] Calculate burn rate and materials needed
-- [ ] Show profit per day and related charts
-- [ ] Stable baseline schema and API integration
 
 ## Contributing
 
 1. Create a feature branch from `develop`
 2. Make your changes
-3. Ensure all tests pass and linting is clean
+3. Ensure all checks pass (`npm run lint`, `npm run format:check`, `npm run build`)
 4. Create a pull request
 
-Pre-commit hooks will automatically run linting and formatting checks.
+All pull requests will trigger CI checks and Vercel preview deployments.
