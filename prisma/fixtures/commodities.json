@@ -1,0 +1,102 @@
+[
+  {
+    "symbol": "GC",
+    "name": "Gold",
+    "category": "Precious Metals"
+  },
+  {
+    "symbol": "BDE",
+    "name": "Beryllium",
+    "category": "Rare Earth Elements"
+  },
+  {
+    "symbol": "FE",
+    "name": "Iron",
+    "category": "Base Metals"
+  },
+  {
+    "symbol": "AL",
+    "name": "Aluminum",
+    "category": "Base Metals"
+  },
+  {
+    "symbol": "CU",
+    "name": "Copper",
+    "category": "Base Metals"
+  },
+  {
+    "symbol": "TI",
+    "name": "Titanium",
+    "category": "Base Metals"
+  },
+  {
+    "symbol": "SI",
+    "name": "Silicon",
+    "category": "Semiconductors"
+  },
+  {
+    "symbol": "LI",
+    "name": "Lithium",
+    "category": "Battery Materials"
+  },
+  {
+    "symbol": "CO",
+    "name": "Cobalt",
+    "category": "Battery Materials"
+  },
+  {
+    "symbol": "NI",
+    "name": "Nickel",
+    "category": "Battery Materials"
+  },
+  {
+    "symbol": "MN",
+    "name": "Manganese",
+    "category": "Battery Materials"
+  },
+  {
+    "symbol": "CR",
+    "name": "Chromium",
+    "category": "Alloy Materials"
+  },
+  {
+    "symbol": "MO",
+    "name": "Molybdenum",
+    "category": "Alloy Materials"
+  },
+  {
+    "symbol": "V",
+    "name": "Vanadium",
+    "category": "Alloy Materials"
+  },
+  {
+    "symbol": "W",
+    "name": "Tungsten",
+    "category": "Alloy Materials"
+  },
+  {
+    "symbol": "TA",
+    "name": "Tantalum",
+    "category": "Rare Earth Elements"
+  },
+  {
+    "symbol": "NB",
+    "name": "Niobium",
+    "category": "Rare Earth Elements"
+  },
+  {
+    "symbol": "RE",
+    "name": "Rare Earth Elements",
+    "category": "Rare Earth Elements"
+  },
+  {
+    "symbol": "U",
+    "name": "Uranium",
+    "category": "Nuclear Materials"
+  },
+  {
+    "symbol": "TH",
+    "name": "Thorium",
+    "category": "Nuclear Materials"
+  }
+]

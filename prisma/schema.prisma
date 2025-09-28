@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Commodity {
+  id       String  @id @default(cuid())
+  symbol   String  @unique
+  name     String
+  category String?
+
+  // Relations
+  prices Price[]
+
+  @@map("commodities")
+}
+
+model Station {
+  id     String  @id @default(cuid())
+  code   String  @unique
+  name   String
+  planet String?
+  system String?
+
+  // Relations
+  prices Price[]
+
+  @@map("stations")
+}
+
+model Price {
+  id          String   @id @default(cuid())
+  stationId   String
+  commodityId String
+  ask         Decimal?
+  bid         Decimal?
+  ts          DateTime @default(now())
+
+  // Relations
+  station   Station   @relation(fields: [stationId], references: [id], onDelete: Cascade)
+  commodity Commodity @relation(fields: [commodityId], references: [id], onDelete: Cascade)
+
+  @@index([stationId, commodityId])
+  @@map("prices")
+}
+
+model ProductionOrder {
+  id             String   @id @default(cuid())
+  baseCode       String
+  building       String
+  recipe         String
+  qtyPerBatch    Int
+  cycleSeconds   Int
+  efficiencyPct  Int      @default(100)
+  updatedAt      DateTime @updatedAt
+
+  @@map("production_orders")
+}
