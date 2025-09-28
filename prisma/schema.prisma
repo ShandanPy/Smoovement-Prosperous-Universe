@@ -47,7 +47,7 @@ model Price {
   station   Station   @relation(fields: [stationId], references: [id], onDelete: Cascade)
   commodity Commodity @relation(fields: [commodityId], references: [id], onDelete: Cascade)
 
-  @@index([stationId, commodityId])
+  @@unique([stationId, commodityId])
   @@map("prices")
 }
 

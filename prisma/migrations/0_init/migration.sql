@@ -52,7 +52,7 @@ CREATE UNIQUE INDEX "commodities_symbol_key" ON "commodities"("symbol");
 CREATE UNIQUE INDEX "stations_code_key" ON "stations"("code");
 
 -- CreateIndex
-CREATE INDEX "prices_stationId_commodityId_idx" ON "prices"("stationId", "commodityId");
+CREATE UNIQUE INDEX "prices_stationId_commodityId_key" ON "prices"("stationId", "commodityId");
 
 -- AddForeignKey
 ALTER TABLE "prices" ADD CONSTRAINT "prices_stationId_fkey" FOREIGN KEY ("stationId") REFERENCES "stations"("id") ON DELETE CASCADE ON UPDATE CASCADE;
