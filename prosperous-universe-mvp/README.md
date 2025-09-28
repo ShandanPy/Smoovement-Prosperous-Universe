@@ -50,12 +50,14 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Pre-commit Hooks
 
 This project uses Husky and lint-staged to ensure code quality. Before each commit:
+
 - ESLint will check for code issues
 - Prettier will format the code
 
 ### CI/CD Pipeline
 
 GitHub Actions runs on every push and pull request to `main` and `develop` branches:
+
 - Linting checks
 - Type checking
 - Build verification
@@ -64,6 +66,7 @@ GitHub Actions runs on every push and pull request to `main` and `develop` branc
 ### Vercel Deployment
 
 The project is configured for deployment on Vercel:
+
 - Automatic preview deployments for pull requests
 - Production deployments on merge to main branch
 
