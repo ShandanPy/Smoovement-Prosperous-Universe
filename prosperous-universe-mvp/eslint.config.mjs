@@ -7,7 +7,7 @@ import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import next from '@next/eslint-plugin-next';
 
-export default [
+const eslintConfig = [
   js.configs.recommended,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -91,3 +91,5 @@ export default [
     ],
   },
 ];
+
+export default eslintConfig;
