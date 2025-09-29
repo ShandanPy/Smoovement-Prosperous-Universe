@@ -1,5 +1,23 @@
 import { getInventory } from '@/lib/fioClient';
 
+// Type definitions for mocks
+interface MockStation {
+  id: string;
+  code: string;
+}
+
+interface MockCommodity {
+  id: string;
+  symbol: string;
+}
+
+interface MockInventory {
+  id: string;
+  stationId: string;
+  commodityId: string;
+  qty: number;
+}
+
 // Mock dependencies
 jest.mock('@/lib/fioClient');
 
@@ -25,7 +43,7 @@ jest.mock('@prisma/client', () => ({
 }));
 
 // Import after mocking
-const { syncInventory } = require('@/lib/inventory/syncInventory');
+import { syncInventory } from '@/lib/inventory/syncInventory';
 
 describe('syncInventory', () => {
   beforeEach(() => {
@@ -51,14 +69,16 @@ describe('syncInventory', () => {
 
     // Mock database responses
     mockStationFindUnique
-      .mockResolvedValueOnce({ id: 'station1-id', code: 'STATION1' } as any)
-      .mockResolvedValueOnce({ id: 'station2-id', code: 'STATION2' } as any);
+      .mockResolvedValueOnce({ id: 'station1-id', code: 'STATION1' } as MockStation)
+      .mockResolvedValueOnce({ id: 'station2-id', code: 'STATION2' } as MockStation);
 
     mockCommodityFindUnique
-      .mockResolvedValueOnce({ id: 'comm1-id', symbol: 'COMM1' } as any)
-      .mockResolvedValueOnce({ id: 'comm2-id', symbol: 'COMM2' } as any);
+      .mockResolvedValueOnce({ id: 'comm1-id', symbol: 'COMM1' } as MockCommodity)
+      .mockResolvedValueOnce({ id: 'comm2-id', symbol: 'COMM2' } as MockCommodity);
 
-    mockInventoryUpsert.mockResolvedValueOnce({} as any).mockResolvedValueOnce({} as any);
+    mockInventoryUpsert
+      .mockResolvedValueOnce({} as MockInventory)
+      .mockResolvedValueOnce({} as MockInventory);
 
     const result = await syncInventory({ username: 'test-user' });
 
@@ -95,7 +115,7 @@ describe('syncInventory', () => {
     ];
 
     mockGetInventory.mockResolvedValue(mockFioResponse);
-    mockStationFindUnique.mockResolvedValue({ id: 'station1-id', code: 'STATION1' } as any);
+    mockStationFindUnique.mockResolvedValue({ id: 'station1-id', code: 'STATION1' } as MockStation);
     mockCommodityFindUnique.mockResolvedValue(null);
 
     const result = await syncInventory({ username: 'test-user' });
@@ -114,9 +134,9 @@ describe('syncInventory', () => {
     ];
 
     mockGetInventory.mockResolvedValue(mockFioResponse);
-    mockStationFindUnique.mockResolvedValue({ id: 'station1-id', code: 'STATION1' } as any);
-    mockCommodityFindUnique.mockResolvedValue({ id: 'comm1-id', symbol: 'COMM1' } as any);
-    mockInventoryUpsert.mockResolvedValue({} as any);
+    mockStationFindUnique.mockResolvedValue({ id: 'station1-id', code: 'STATION1' } as MockStation);
+    mockCommodityFindUnique.mockResolvedValue({ id: 'comm1-id', symbol: 'COMM1' } as MockCommodity);
+    mockInventoryUpsert.mockResolvedValue({} as MockInventory);
 
     // Run sync twice
     const result1 = await syncInventory({ username: 'test-user' });

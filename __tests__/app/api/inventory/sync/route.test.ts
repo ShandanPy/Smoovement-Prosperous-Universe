@@ -1,6 +1,5 @@
 import { POST } from '@/app/api/inventory/sync/route';
 import { syncInventory } from '@/lib/inventory/syncInventory';
-import { env } from '@/lib/env';
 
 // Mock dependencies
 jest.mock('@/lib/inventory/syncInventory');

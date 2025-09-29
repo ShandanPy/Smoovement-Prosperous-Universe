@@ -1,5 +1,5 @@
 import { request } from '@/lib/http';
-import { ApiError, createApiError } from '@/lib/errors';
+import { ApiError } from '@/lib/errors';
 
 // Mock fetch
 const mockFetch = global.fetch as jest.MockedFunction<typeof fetch>;
