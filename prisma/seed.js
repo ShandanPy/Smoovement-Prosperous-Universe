@@ -82,6 +82,39 @@ async function main() {
     `✅ Created price data for ${sampleCommodities.length} commodities across ${sampleStations.length} stations`
   );
 
+  // Create some sample inventory data
+  console.log('📦 Creating sample inventory data...');
+  const sampleInventoryCommodities = commodities.slice(0, 5); // First 5 commodities
+  const sampleInventoryStations = stations.slice(0, 3); // First 3 stations
+
+  for (const commodity of sampleInventoryCommodities) {
+    for (const station of sampleInventoryStations) {
+      // Random quantity between 0 and 10000
+      const qty = Math.floor(Math.random() * 10000);
+
+      await prisma.inventory.upsert({
+        where: {
+          stationId_commodityId: {
+            stationId: station.id,
+            commodityId: commodity.id,
+          },
+        },
+        update: {
+          qty,
+          updatedAt: new Date(),
+        },
+        create: {
+          stationId: station.id,
+          commodityId: commodity.id,
+          qty,
+        },
+      });
+    }
+  }
+  console.log(
+    `✅ Created inventory data for ${sampleInventoryCommodities.length} commodities across ${sampleInventoryStations.length} stations`
+  );
+
   console.log('🎉 Database seeding completed!');
 }
 

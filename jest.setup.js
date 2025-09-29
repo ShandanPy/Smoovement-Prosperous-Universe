@@ -1,6 +1,9 @@
 // Jest setup file
 // Global test configuration
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+require('@testing-library/jest-dom');
+
 // Set required environment variables for all tests
 process.env.FIO_BASE_URL = 'https://rest.fnar.net';
 process.env.FIO_API_KEY = 'test-api-key';
