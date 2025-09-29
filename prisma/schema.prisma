@@ -17,7 +17,8 @@ model Commodity {
   category String?
 
   // Relations
-  prices Price[]
+  prices    Price[]
+  inventory Inventory[]
 
   @@map("commodities")
 }
@@ -30,7 +31,8 @@ model Station {
   system String?
 
   // Relations
-  prices Price[]
+  prices    Price[]
+  inventory Inventory[]
 
   @@map("stations")
 }
@@ -62,4 +64,19 @@ model ProductionOrder {
   updatedAt      DateTime @updatedAt
 
   @@map("production_orders")
+}
+
+model Inventory {
+  id          String   @id @default(cuid())
+  stationId   String
+  commodityId String
+  qty         Decimal
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  station   Station   @relation(fields: [stationId], references: [id])
+  commodity Commodity @relation(fields: [commodityId], references: [id])
+
+  @@unique([stationId, commodityId])
+  @@map("inventory")
 }

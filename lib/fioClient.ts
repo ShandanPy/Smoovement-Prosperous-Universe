@@ -152,6 +152,21 @@ export class FioClient {
 }
 
 /**
+ * Get inventory data for a specific username from FIO
+ */
+export async function getInventory(username: string) {
+  const url = `${env.FIO_BASE_URL}/accounts/${username}/inventory`;
+  const res = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${env.FIO_API_KEY}`,
+      'User-Agent': 'SmoovementPU/preview',
+    },
+  });
+  if (!res.ok) throw new Error(`FIO error ${res.status}`);
+  return res.json();
+}
+
+/**
  * Default FIO client instance
  */
 export const fioClient = new FioClient();
