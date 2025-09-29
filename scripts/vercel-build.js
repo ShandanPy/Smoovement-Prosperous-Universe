@@ -22,16 +22,11 @@ async function vercelBuild() {
         execSync('npx prisma migrate deploy', { stdio: 'inherit' });
         console.log('✅ Migrations completed');
       } catch (migrationError) {
-        console.warn(
-          '⚠️ Migration failed, but continuing build:',
-          migrationError.message
-        );
+        console.warn('⚠️ Migration failed, but continuing build:', migrationError.message);
       }
     } else {
       console.log('⚠️ DATABASE_URL not found, skipping migrations');
-      console.log(
-        '💡 Make sure to set DATABASE_URL in Vercel environment variables'
-      );
+      console.log('💡 Make sure to set DATABASE_URL in Vercel environment variables');
     }
 
     // Build Next.js app
