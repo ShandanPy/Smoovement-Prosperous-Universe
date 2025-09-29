@@ -21,6 +21,7 @@
     "prisma:migrate:dev": "prisma migrate dev",
     "db:seed": "node prisma/seed.js",
     "db:reset": "prisma migrate reset --force && npm run db:seed",
+    "db:setup": "node setup-database.js",
     "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
