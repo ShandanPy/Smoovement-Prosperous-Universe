@@ -72,7 +72,6 @@ jobs:
 
       - name: Run tests
         run: npm test
-        continue-on-error: true # Since we don't have tests yet
 
   type-check:
     name: Type Check
