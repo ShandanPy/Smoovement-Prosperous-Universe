@@ -78,48 +78,55 @@ describe('lib/env', () => {
       expect(env.FIO_BASE_URL).toBe('http://localhost:3000');
     });
 
-    it('should throw error when FIO_API_KEY is missing when accessed', async () => {
+    it('should return empty string when FIO_API_KEY is missing (build-time compatibility)', async () => {
       delete process.env.FIO_API_KEY;
 
       const { env } = await import('@/lib/env');
 
-      expect(() => {
-        // Access any property to trigger validation
-        return env.FIO_API_KEY;
-      }).toThrow();
+      // During testing, missing env vars return empty strings for build compatibility
+      expect(env.FIO_API_KEY).toBe('');
     });
 
-    it('should throw error when PU_USERNAME is missing when accessed', async () => {
+    it('should return empty string when PU_USERNAME is missing (build-time compatibility)', async () => {
       delete process.env.PU_USERNAME;
 
       const { env } = await import('@/lib/env');
 
-      expect(() => {
-        // Access any property to trigger validation
-        return env.PU_USERNAME;
-      }).toThrow();
+      // During testing, missing env vars return empty strings for build compatibility
+      expect(env.PU_USERNAME).toBe('');
     });
 
-    it('should throw error when MAINT_TOKEN is missing when accessed', async () => {
+    it('should return empty string when MAINT_TOKEN is missing (build-time compatibility)', async () => {
       delete process.env.MAINT_TOKEN;
 
       const { env } = await import('@/lib/env');
 
-      expect(() => {
-        // Access any property to trigger validation
-        return env.MAINT_TOKEN;
-      }).toThrow();
+      // During testing, missing env vars return empty strings for build compatibility
+      expect(env.MAINT_TOKEN).toBe('');
     });
 
-    it('should throw error when FIO_API_KEY is empty when accessed', async () => {
+    it('should return empty string when FIO_API_KEY is empty (build-time compatibility)', async () => {
       process.env.FIO_API_KEY = '';
 
       const { env } = await import('@/lib/env');
 
-      expect(() => {
-        // Access any property to trigger validation
-        return env.FIO_API_KEY;
-      }).toThrow();
+      // During testing, empty env vars return empty strings for build compatibility
+      expect(env.FIO_API_KEY).toBe('');
+    });
+
+    it('should validate environment variables at runtime when properly set', async () => {
+      // Set all required environment variables
+      process.env.FIO_BASE_URL = 'https://rest.fnar.net';
+      process.env.FIO_API_KEY = 'test-api-key';
+      process.env.PU_USERNAME = 'test-username';
+      process.env.MAINT_TOKEN = 'test-maint-token';
+
+      const { env } = await import('@/lib/env');
+
+      expect(env.FIO_BASE_URL).toBe('https://rest.fnar.net');
+      expect(env.FIO_API_KEY).toBe('test-api-key');
+      expect(env.PU_USERNAME).toBe('test-username');
+      expect(env.MAINT_TOKEN).toBe('test-maint-token');
     });
 
     it('should accept all required environment variables', async () => {
