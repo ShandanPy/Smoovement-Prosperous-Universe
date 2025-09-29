@@ -16,17 +16,19 @@ async function vercelBuild() {
     console.log('✅ Prisma client generated');
 
     // Check if DATABASE_URL is available
-    if (process.env.DATABASE_URL) {
+    if (process.env.DATABASE_URL && process.env.DATABASE_URL.trim() !== '') {
       console.log('🗄️ DATABASE_URL found, running migrations...');
       try {
         execSync('npx prisma migrate deploy', { stdio: 'inherit' });
         console.log('✅ Migrations completed');
       } catch (migrationError) {
         console.warn('⚠️ Migration failed, but continuing build:', migrationError.message);
+        console.log('💡 This is normal if database is already set up');
       }
     } else {
       console.log('⚠️ DATABASE_URL not found, skipping migrations');
       console.log('💡 Make sure to set DATABASE_URL in Vercel environment variables');
+      console.log('💡 Build will continue without database setup');
     }
 
     // Build Next.js app
