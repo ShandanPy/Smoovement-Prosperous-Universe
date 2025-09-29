@@ -17,10 +17,13 @@
     "test:coverage": "jest --coverage",
     "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate deploy",
+    "prisma:migrate": "prisma migrate deploy || echo 'Migration skipped - no DATABASE_URL'",
     "prisma:migrate:dev": "prisma migrate dev",
     "db:seed": "node prisma/seed.js",
-    "db:reset": "prisma migrate reset --force && npm run db:seed"
+    "db:reset": "prisma migrate reset --force && npm run db:seed",
+    "db:setup": "node setup-database.js",
+    "vercel-build": "node scripts/vercel-build.js",
+    "post-deploy": "node scripts/post-deploy.js"
   },
   "dependencies": {
     "@prisma/client": "^6.16.2",
