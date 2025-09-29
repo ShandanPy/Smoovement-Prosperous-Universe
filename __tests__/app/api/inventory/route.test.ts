@@ -1,5 +1,6 @@
 import { GET } from '@/app/api/inventory/route';
 import { db } from '@/lib/db';
+import { Decimal } from '@prisma/client/runtime/library';
 
 // Mock the database
 jest.mock('@/lib/db', () => ({
@@ -11,6 +12,9 @@ jest.mock('@/lib/db', () => ({
 }));
 
 const mockDb = db as jest.Mocked<typeof db>;
+const mockFindMany = mockDb.inventory.findMany as jest.MockedFunction<
+  typeof mockDb.inventory.findMany
+>;
 
 describe('/api/inventory', () => {
   beforeEach(() => {
@@ -21,7 +25,9 @@ describe('/api/inventory', () => {
     const mockInventory = [
       {
         id: '1',
-        qty: 100,
+        stationId: 'station-1',
+        commodityId: 'commodity-1',
+        qty: new Decimal(100),
         updatedAt: new Date('2024-01-01T00:00:00Z'),
         station: {
           code: 'STN-001',
@@ -34,7 +40,9 @@ describe('/api/inventory', () => {
       },
       {
         id: '2',
-        qty: 50,
+        stationId: 'station-2',
+        commodityId: 'commodity-2',
+        qty: new Decimal(50),
         updatedAt: new Date('2024-01-02T00:00:00Z'),
         station: {
           code: 'STN-002',
@@ -47,7 +55,7 @@ describe('/api/inventory', () => {
       },
     ];
 
-    mockDb.inventory.findMany.mockResolvedValue(mockInventory);
+    mockFindMany.mockResolvedValue(mockInventory);
 
     const response = await GET();
     const data = await response.json();
@@ -72,7 +80,7 @@ describe('/api/inventory', () => {
       },
     ]);
 
-    expect(mockDb.inventory.findMany).toHaveBeenCalledWith({
+    expect(mockFindMany).toHaveBeenCalledWith({
       include: {
         station: {
           select: {
@@ -94,7 +102,7 @@ describe('/api/inventory', () => {
   });
 
   it('should return empty array when no inventory exists', async () => {
-    mockDb.inventory.findMany.mockResolvedValue([]);
+    mockFindMany.mockResolvedValue([]);
 
     const response = await GET();
     const data = await response.json();
@@ -105,7 +113,7 @@ describe('/api/inventory', () => {
 
   it('should handle database errors', async () => {
     const error = new Error('Database connection failed');
-    mockDb.inventory.findMany.mockRejectedValue(error);
+    mockFindMany.mockRejectedValue(error);
 
     const response = await GET();
     const data = await response.json();
@@ -117,7 +125,7 @@ describe('/api/inventory', () => {
   });
 
   it('should handle unknown errors', async () => {
-    mockDb.inventory.findMany.mockRejectedValue('Unknown error');
+    mockFindMany.mockRejectedValue('Unknown error');
 
     const response = await GET();
     const data = await response.json();

@@ -32,8 +32,9 @@ npm run db:seed
 ```
 
 This will create:
+
 - 20 commodities
-- 140 stations  
+- 140 stations
 - Sample price data
 - Sample inventory data (5 commodities across 3 stations)
 
@@ -48,6 +49,7 @@ curl http://localhost:3000/api/inventory
 ```
 
 This should return JSON data with inventory items including:
+
 - `stationCode`: Station identifier
 - `stationName`: Human-readable station name
 - `commoditySymbol`: Commodity code
@@ -67,18 +69,22 @@ curl -X POST http://localhost:3000/api/inventory/sync \
 ## Testing Features
 
 ### Search Functionality
+
 - Type in the search box to filter by station or commodity
 - Search is case-insensitive and matches partial strings
 
 ### Sorting
+
 - Click column headers to sort ascending/descending
 - Visual indicators show current sort direction
 
 ### Responsive Design
+
 - Resize browser window to test mobile layout
 - Table scrolls horizontally on small screens
 
 ### Error States
+
 - Disconnect from internet to test error handling
 - API errors show user-friendly error messages
 
@@ -95,12 +101,14 @@ curl -X POST http://localhost:3000/api/inventory/sync \
 ## Performance
 
 The page is optimized for performance with:
+
 - Client-side caching via TanStack Query
 - Efficient table rendering with TanStack Table
 - Responsive images and optimized fonts
 - Minimal JavaScript bundle size
 
 Expected Lighthouse scores:
+
 - Performance: 90+
 - Accessibility: 95+
 - Best Practices: 95+
