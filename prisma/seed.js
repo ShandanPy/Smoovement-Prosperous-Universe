@@ -78,7 +78,9 @@ async function main() {
       });
     }
   }
-  console.log(`✅ Created price data for ${sampleCommodities.length} commodities across ${sampleStations.length} stations`);
+  console.log(
+    `✅ Created price data for ${sampleCommodities.length} commodities across ${sampleStations.length} stations`
+  );
 
   console.log('🎉 Database seeding completed!');
 }

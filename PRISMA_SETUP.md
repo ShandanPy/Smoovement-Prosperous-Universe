@@ -7,12 +7,14 @@ This document explains how to set up and test the Prisma database integration.
 The following models have been created:
 
 ### Commodity
+
 - `id`: Unique identifier (cuid)
 - `symbol`: Unique commodity symbol (e.g., "GC", "BDE")
 - `name`: Human-readable name
 - `category`: Optional category (e.g., "Precious Metals", "Base Metals")
 
 ### Station
+
 - `id`: Unique identifier (cuid)
 - `code`: Unique station code (e.g., "CI1", "TI1")
 - `name`: Station name
@@ -20,6 +22,7 @@ The following models have been created:
 - `system`: Optional system name
 
 ### Price
+
 - `id`: Unique identifier (cuid)
 - `stationId`: Reference to Station
 - `commodityId`: Reference to Commodity
@@ -29,6 +32,7 @@ The following models have been created:
 - Unique constraint on `stationId + commodityId`
 
 ### ProductionOrder
+
 - `id`: Unique identifier (cuid)
 - `baseCode`: Base station code
 - `building`: Building type
@@ -49,21 +53,26 @@ The following models have been created:
 ## How to Test Locally
 
 ### Prerequisites
+
 1. PostgreSQL database (local or cloud service like Supabase)
 2. Set `DATABASE_URL` in `.env` file
 
 ### Steps
+
 1. **Generate Prisma Client**
+
    ```bash
    npm run prisma:generate
    ```
 
 2. **Run Migrations**
+
    ```bash
    npm run prisma:migrate:dev
    ```
 
 3. **Seed Database**
+
    ```bash
    npm run db:seed
    ```
@@ -75,6 +84,7 @@ The following models have been created:
 ## CI/CD Integration
 
 The CI workflow includes:
+
 - Prisma client generation in build step
 - Database migration deployment in separate job
 - Type checking and linting
@@ -82,6 +92,7 @@ The CI workflow includes:
 ## Seed Data
 
 ### Commodities (21 items)
+
 - Precious Metals: Gold (GC)
 - Rare Earth Elements: Beryllium (BDE), Tantalum (TA), Niobium (NB)
 - Base Metals: Iron (FE), Aluminum (AL), Copper (CU), Titanium (TI)
@@ -91,6 +102,7 @@ The CI workflow includes:
 - Nuclear Materials: Uranium (U), Thorium (TH)
 
 ### Stations (100+ items)
+
 - Ceres stations: CI1-CI10
 - Titan stations: TI1-TI10
 - Europa stations: EU1-EU10
@@ -107,6 +119,7 @@ The CI workflow includes:
 - Pluto stations: PL1-PL10
 
 ### Sample Price Data
+
 - Random prices generated for first 10 commodities across first 20 stations
 - Ask prices: base price + 0-10% markup
 - Bid prices: base price - 0-10% markdown
@@ -114,6 +127,7 @@ The CI workflow includes:
 ## Database Client
 
 The database client is available at `lib/db.ts` and provides:
+
 - Singleton pattern for development hot-reload safety
 - Query logging in development
 - Proper connection management
