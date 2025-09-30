@@ -39,6 +39,7 @@ FIO_BASE_URL=https://rest.fnar.net
 Once your app is deployed, you need to set up the database (one-time only):
 
 ### **Option A: Use Vercel CLI**
+
 ```bash
 # Install Vercel CLI
 npm install -g vercel
@@ -52,6 +53,7 @@ npm run post-deploy
 ```
 
 ### **Option B: Use Vercel Dashboard**
+
 1. Go to your project's **Functions** tab
 2. Find the **post-deploy** function
 3. Click **"Invoke"** to run database setup

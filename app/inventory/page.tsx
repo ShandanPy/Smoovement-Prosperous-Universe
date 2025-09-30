@@ -17,7 +17,7 @@ import { useInventory, type InventoryItem } from '@/lib/hooks/useInventory';
 function SyncInventoryButton() {
   const queryClient = useQueryClient();
   const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null);
-  
+
   const syncMutation = useMutation({
     mutationFn: async () => {
       // Note: In a real app, you'd get the token from a secure place
@@ -28,12 +28,12 @@ function SyncInventoryButton() {
           'x-maint-token': process.env.NEXT_PUBLIC_MAINT_TOKEN || '',
         },
       });
-      
+
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.error || 'Sync failed');
       }
-      
+
       return response.json();
     },
     onSuccess: (data) => {
@@ -54,30 +54,40 @@ function SyncInventoryButton() {
         {syncMutation.isPending ? (
           <>
             <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+                fill="none"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
             </svg>
             Syncing from FIO...
           </>
         ) : (
-          <>
-            🔄 Sync from FIO
-          </>
+          <>🔄 Sync from FIO</>
         )}
       </button>
-      
+
       {lastSyncTime && (
         <span className="text-sm text-gray-600">
           Last synced: {lastSyncTime.toLocaleTimeString()}
         </span>
       )}
-      
+
       {syncMutation.isError && (
         <div className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-md">
           ❌ {syncMutation.error instanceof Error ? syncMutation.error.message : 'Sync failed'}
         </div>
       )}
-      
+
       {syncMutation.isSuccess && syncMutation.data && (
         <div className="text-sm text-green-600 bg-green-50 px-3 py-2 rounded-md">
           ✅ Synced {syncMutation.data.updated} items
@@ -206,7 +216,8 @@ export default function InventoryPage() {
               <div className="mt-6 bg-gray-100 rounded-lg p-4 text-left max-w-md mx-auto">
                 <p className="text-sm text-gray-700 mb-2">Or sync via command line:</p>
                 <code className="text-xs bg-gray-200 px-2 py-1 rounded block">
-                  curl -X POST http://localhost:3000/api/inventory/sync -H "x-maint-token: $MAINT_TOKEN"
+                  curl -X POST http://localhost:3000/api/inventory/sync -H &quot;x-maint-token:
+                  $MAINT_TOKEN&quot;
                 </code>
               </div>
             </div>

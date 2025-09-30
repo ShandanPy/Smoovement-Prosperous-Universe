@@ -13,6 +13,7 @@ This guide specifically addresses common Vercel deployment issues with this Next
 **Solution**: Update your build process:
 
 1. **Update `vercel.json`**:
+
 ```json
 {
   "framework": "nextjs",
@@ -29,6 +30,7 @@ This guide specifically addresses common Vercel deployment issues with this Next
 ```
 
 2. **Add build script to `package.json`**:
+
 ```json
 {
   "scripts": {
@@ -55,6 +57,7 @@ This guide specifically addresses common Vercel deployment issues with this Next
    - Format: `postgresql://username:password@host:port/database?schema=public`
 
 2. **Update Prisma Schema for Production**:
+
 ```prisma
 // prisma/schema.prisma
 generator client {
@@ -80,6 +83,7 @@ datasource db {
 **Solution**: Add migration deployment to build process:
 
 1. **Update build command**:
+
 ```json
 {
   "buildCommand": "npm run prisma:generate && npm run prisma:migrate && npm run build"
@@ -87,6 +91,7 @@ datasource db {
 ```
 
 2. **Or use the vercel-build script**:
+
 ```json
 {
   "scripts": {
@@ -96,6 +101,7 @@ datasource db {
 ```
 
 3. **Manual migration deployment**:
+
 ```bash
 # Deploy migrations manually
 vercel env pull .env.local
@@ -109,6 +115,7 @@ npx prisma migrate deploy
 **Solution**: Optimize and configure timeouts:
 
 1. **Update `vercel.json`**:
+
 ```json
 {
   "functions": {
@@ -125,6 +132,7 @@ npx prisma migrate deploy
    - Implement caching
 
 3. **Add error handling**:
+
 ```typescript
 // app/api/example/route.ts
 export async function GET() {
@@ -168,11 +176,13 @@ FIO_BASE_URL=https://rest.fnar.net
 ### 3. Set up Database
 
 **Option A: Vercel Postgres (Recommended)**
+
 1. Go to Vercel Dashboard → Project → Storage
 2. Create Database → Postgres
 3. Copy connection string to `DATABASE_URL`
 
 **Option B: External PostgreSQL**
+
 - Supabase, Neon, Railway, or PlanetScale
 - Get connection string and add to environment variables
 
@@ -227,13 +237,13 @@ npm run dev
 
 ### 4. Common Error Messages & Solutions
 
-| Error | Solution |
-|-------|----------|
+| Error                                              | Solution                                       |
+| -------------------------------------------------- | ---------------------------------------------- |
 | `Module not found: Can't resolve '@prisma/client'` | Run `npm run prisma:generate` in build command |
-| `Database connection failed` | Check `DATABASE_URL` environment variable |
-| `Migration failed` | Add `prisma migrate deploy` to build command |
-| `Function timeout` | Increase `maxDuration` in `vercel.json` |
-| `Environment variable not found` | Add missing variables in Vercel dashboard |
+| `Database connection failed`                       | Check `DATABASE_URL` environment variable      |
+| `Migration failed`                                 | Add `prisma migrate deploy` to build command   |
+| `Function timeout`                                 | Increase `maxDuration` in `vercel.json`        |
+| `Environment variable not found`                   | Add missing variables in Vercel dashboard      |
 
 ## 🚀 Production Optimization
 
@@ -275,16 +285,13 @@ Add error monitoring:
 // lib/error-handler.ts
 export function handleApiError(error: unknown) {
   console.error('API Error:', error);
-  
+
   // Send to monitoring service (Sentry, etc.)
   // if (process.env.NODE_ENV === 'production') {
   //   Sentry.captureException(error);
   // }
-  
-  return Response.json(
-    { error: 'Internal Server Error' },
-    { status: 500 }
-  );
+
+  return Response.json({ error: 'Internal Server Error' }, { status: 500 });
 }
 ```
 

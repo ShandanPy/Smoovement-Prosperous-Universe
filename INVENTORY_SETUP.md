@@ -67,6 +67,7 @@ You can sync your inventory in two ways:
    - Wait for the sync to complete
 
 2. **Using the command line:**
+
 ```bash
 curl -X POST http://localhost:3000/api/inventory/sync \
   -H "x-maint-token: $MAINT_TOKEN"

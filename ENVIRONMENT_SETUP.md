@@ -6,20 +6,20 @@ This guide explains how to properly configure environment variables for the Pros
 
 ### Core Variables
 
-| Variable | Description | Required | Example |
-|----------|-------------|----------|---------|
-| `FIO_API_KEY` | API key for FIO (Fictional Interstellar Operations) | ✅ Yes | `your_fio_api_key_here` |
-| `PU_USERNAME` | Your Prosperous Universe username | ✅ Yes | `your_username` |
-| `MAINT_TOKEN` | Maintenance token for admin operations | ✅ Yes | `your_maint_token_here` |
-| `DATABASE_URL` | Database connection string | ✅ Yes (Production) | `postgresql://user:pass@host:port/db` |
+| Variable       | Description                                         | Required            | Example                               |
+| -------------- | --------------------------------------------------- | ------------------- | ------------------------------------- |
+| `FIO_API_KEY`  | API key for FIO (Fictional Interstellar Operations) | ✅ Yes              | `your_fio_api_key_here`               |
+| `PU_USERNAME`  | Your Prosperous Universe username                   | ✅ Yes              | `your_username`                       |
+| `MAINT_TOKEN`  | Maintenance token for admin operations              | ✅ Yes              | `your_maint_token_here`               |
+| `DATABASE_URL` | Database connection string                          | ✅ Yes (Production) | `postgresql://user:pass@host:port/db` |
 
 ### Optional Variables
 
-| Variable | Description | Default | Example |
-|----------|-------------|---------|---------|
-| `FIO_BASE_URL` | Base URL for FIO API | `https://rest.fnar.net` | `https://rest.fnar.net` |
-| `DIRECT_URL` | Direct database URL for connection pooling | - | `postgresql://user:pass@host:port/db` |
-| `NODE_ENV` | Environment mode | `development` | `production` |
+| Variable       | Description                                | Default                 | Example                               |
+| -------------- | ------------------------------------------ | ----------------------- | ------------------------------------- |
+| `FIO_BASE_URL` | Base URL for FIO API                       | `https://rest.fnar.net` | `https://rest.fnar.net`               |
+| `DIRECT_URL`   | Direct database URL for connection pooling | -                       | `postgresql://user:pass@host:port/db` |
+| `NODE_ENV`     | Environment mode                           | `development`           | `production`                          |
 
 ## 🏠 Local Development Setup
 
@@ -54,17 +54,21 @@ NODE_ENV=development
 ### 3. Get Your API Credentials
 
 #### FIO API Key
+
 1. Go to [FIO API Documentation](https://rest.fnar.net)
 2. Register for an API key
 3. Copy the key to your `.env.local`
 
 #### Prosperous Universe Username
+
 1. This is your in-game username
 2. Used for inventory synchronization
 
 #### Maintenance Token
+
 1. This is a custom token for admin operations
 2. Generate a secure random string:
+
 ```bash
 # Generate a secure token
 openssl rand -hex 32
@@ -91,14 +95,14 @@ curl http://localhost:3000/api/ping
 
 #### Environment Variable Configuration
 
-| Variable | Production | Preview | Development |
-|----------|------------|---------|-------------|
-| `FIO_API_KEY` | ✅ | ✅ | ✅ |
-| `PU_USERNAME` | ✅ | ✅ | ✅ |
-| `MAINT_TOKEN` | ✅ | ✅ | ✅ |
-| `DATABASE_URL` | ✅ | ✅ | ✅ |
-| `FIO_BASE_URL` | ✅ | ✅ | ✅ |
-| `DIRECT_URL` | ✅ | ✅ | ✅ |
+| Variable       | Production | Preview | Development |
+| -------------- | ---------- | ------- | ----------- |
+| `FIO_API_KEY`  | ✅         | ✅      | ✅          |
+| `PU_USERNAME`  | ✅         | ✅      | ✅          |
+| `MAINT_TOKEN`  | ✅         | ✅      | ✅          |
+| `DATABASE_URL` | ✅         | ✅      | ✅          |
+| `FIO_BASE_URL` | ✅         | ✅      | ✅          |
+| `DIRECT_URL`   | ✅         | ✅      | ✅          |
 
 ### 2. Database URL Setup
 
@@ -112,18 +116,21 @@ curl http://localhost:3000/api/ping
 #### Option B: External PostgreSQL
 
 **Supabase**:
+
 ```bash
 # Format: postgresql://postgres:[password]@[host]:5432/postgres
 DATABASE_URL=postgresql://postgres.abcdefghijklmnop:your_password@aws-0-us-east-1.pooler.supabase.com:6543/postgres
 ```
 
 **Neon**:
+
 ```bash
 # Format: postgresql://[user]:[password]@[host]/[database]?sslmode=require
 DATABASE_URL=postgresql://alex:AbC123dEf@ep-cool-darkness-123456.us-east-2.aws.neon.tech/neondb?sslmode=require
 ```
 
 **Railway**:
+
 ```bash
 # Format: postgresql://postgres:[password]@[host]:[port]/railway
 DATABASE_URL=postgresql://postgres:password@containers-us-west-123.railway.app:6543/railway
@@ -222,14 +229,14 @@ import { env } from '../lib/env';
 
 function testEnvironment() {
   console.log('🧪 Testing environment variables...');
-  
+
   try {
     // Test each required variable
     console.log('✅ FIO_BASE_URL:', env.FIO_BASE_URL);
     console.log('✅ FIO_API_KEY:', env.FIO_API_KEY ? 'Set' : 'Missing');
     console.log('✅ PU_USERNAME:', env.PU_USERNAME);
     console.log('✅ MAINT_TOKEN:', env.MAINT_TOKEN ? 'Set' : 'Missing');
-    
+
     console.log('🎉 All environment variables are properly configured!');
   } catch (error) {
     console.error('❌ Environment validation failed:', error);
@@ -254,6 +261,7 @@ npm run test:env
 **Problem**: Application can't find required environment variables.
 
 **Solutions**:
+
 1. Check file name: `.env.local` (not `.env`)
 2. Restart development server after adding variables
 3. Verify variable names match exactly (case-sensitive)
@@ -264,6 +272,7 @@ npm run test:env
 **Problem**: Environment variables have incorrect format.
 
 **Solutions**:
+
 1. Check URL format for `FIO_BASE_URL`
 2. Ensure no extra spaces or quotes around values
 3. Verify database URL format
@@ -273,6 +282,7 @@ npm run test:env
 **Problem**: `DATABASE_URL` is incorrect or database is not accessible.
 
 **Solutions**:
+
 1. Test database connection string
 2. Verify database credentials
 3. Check if database server is running
@@ -283,6 +293,7 @@ npm run test:env
 **Problem**: FIO API key is incorrect or expired.
 
 **Solutions**:
+
 1. Verify API key with FIO service
 2. Check if key has proper permissions
 3. Regenerate API key if needed
@@ -345,7 +356,7 @@ export async function GET() {
     databaseUrl: !!process.env.DATABASE_URL,
     nodeEnv: process.env.NODE_ENV,
   };
-  
+
   return Response.json({
     status: 'healthy',
     environment: envStatus,
@@ -383,6 +394,7 @@ jobs:
 ## 🎯 Quick Setup Checklist
 
 ### Local Development
+
 - [ ] Create `.env.local` file
 - [ ] Add `FIO_API_KEY`
 - [ ] Add `PU_USERNAME`
@@ -392,6 +404,7 @@ jobs:
 - [ ] Test API endpoints
 
 ### Production (Vercel)
+
 - [ ] Set environment variables in Vercel dashboard
 - [ ] Configure `DATABASE_URL` for PostgreSQL
 - [ ] Set all variables for Production, Preview, and Development
@@ -399,6 +412,7 @@ jobs:
 - [ ] Verify health check endpoint
 
 ### Security
+
 - [ ] Use strong, unique tokens
 - [ ] Never commit environment files
 - [ ] Rotate API keys regularly

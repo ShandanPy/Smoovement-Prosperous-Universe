@@ -43,6 +43,7 @@ FIO_BASE_URL=https://rest.fnar.net
 ```
 
 ### 📊 **Database Status**
+
 - **Tables**: 5 tables created and ready
 - **Sample Data**: 20 commodities, 140 stations, 200 prices, 15 inventory records
 - **Connection**: Working perfectly with Supabase

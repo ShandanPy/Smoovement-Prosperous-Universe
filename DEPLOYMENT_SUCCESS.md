@@ -5,15 +5,17 @@
 Your Supabase PostgreSQL database is now fully configured and ready for deployment!
 
 ### ✅ **Database Status**
+
 - **Connection**: ✅ Working
 - **Tables**: ✅ Created (5 tables)
 - **Sample Data**: ✅ Seeded
   - 20 commodities
-  - 140 stations  
+  - 140 stations
   - 200 price records
   - 15 inventory records
 
 ### ✅ **Fixed Issues**
+
 1. **Migration Provider Mismatch** - Removed old SQLite migrations
 2. **Environment Variables** - Properly configured
 3. **Database URL** - Using correct port (5432)
@@ -22,6 +24,7 @@ Your Supabase PostgreSQL database is now fully configured and ready for deployme
 ## 🚀 **Ready for Vercel Deployment**
 
 ### **Environment Variables for Vercel**
+
 Set these in your Vercel dashboard:
 
 ```
@@ -33,6 +36,7 @@ FIO_BASE_URL=https://rest.fnar.net
 ```
 
 ### **Deployment Steps**
+
 1. **Push your changes to GitHub**
 2. **Set environment variables in Vercel dashboard**
 3. **Vercel will automatically deploy**
@@ -56,6 +60,7 @@ curl -X POST https://your-project.vercel.app/api/inventory/sync \
 ## 📊 **Database Schema**
 
 Your database now contains:
+
 - **Commodities**: 20 items (Gold, Iron, Aluminum, etc.)
 - **Stations**: 140 stations across all planets
 - **Prices**: Sample pricing data

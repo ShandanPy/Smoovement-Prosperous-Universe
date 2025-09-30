@@ -53,6 +53,7 @@ https://your-project.vercel.app/api/inventory
 ## 🎉 **That's It!**
 
 **No local setup required!** Vercel handles everything:
+
 - Database creation
 - Migration deployment
 - Data seeding
