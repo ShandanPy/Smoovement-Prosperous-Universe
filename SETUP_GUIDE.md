@@ -62,12 +62,14 @@ npm run db:seed
 For Vercel deployment, you'll need a PostgreSQL database:
 
 **Option 1: Vercel Postgres (Recommended)**
+
 1. Go to your Vercel dashboard
 2. Navigate to your project
 3. Go to Storage → Create Database → Postgres
 4. Copy the connection string to your environment variables
 
 **Option 2: External PostgreSQL**
+
 - **Supabase**: Free tier available
 - **Neon**: Free tier available
 - **Railway**: Free tier available
@@ -111,13 +113,14 @@ npm run test:coverage
 1. **Home Page**: Navigate to `http://localhost:3000`
 2. **Inventory Page**: Navigate to `http://localhost:3000/inventory`
 3. **API Endpoints**:
+
    ```bash
    # Test ping endpoint
    curl http://localhost:3000/api/ping
-   
+
    # Test inventory endpoint
    curl http://localhost:3000/api/inventory
-   
+
    # Test inventory sync (requires MAINT_TOKEN)
    curl -X POST http://localhost:3000/api/inventory/sync \
      -H "x-maint-token: $MAINT_TOKEN"
@@ -132,6 +135,7 @@ npm run test:coverage
 **Problem**: Build fails with Prisma or database errors
 
 **Solution**:
+
 1. Ensure `DATABASE_URL` is set in Vercel environment variables
 2. Add build command override in `vercel.json`:
    ```json
@@ -145,12 +149,14 @@ npm run test:coverage
 **Problem**: "Database connection failed" or "Prisma client not generated"
 
 **Solutions**:
+
 1. **Check Environment Variables**:
    - Go to Vercel Dashboard → Project → Settings → Environment Variables
    - Ensure `DATABASE_URL` is set for Production, Preview, and Development
    - Ensure all required environment variables are set
 
 2. **Update Vercel Configuration**:
+
    ```json
    // vercel.json
    {
@@ -182,6 +188,7 @@ npm run test:coverage
 **Problem**: API routes timeout on Vercel
 
 **Solution**:
+
 1. Optimize database queries
 2. Add caching where appropriate
 3. Increase function timeout in `vercel.json`:
@@ -198,6 +205,7 @@ npm run test:coverage
 ### Deployment Steps
 
 1. **Connect to Vercel**:
+
    ```bash
    npm install -g vercel
    vercel login
@@ -220,7 +228,9 @@ npm run test:coverage
 #### Issue 1: "Database not found" or "Table doesn't exist"
 
 **Solutions**:
+
 1. **Local Development**:
+
    ```bash
    # Reset and reseed database
    npm run db:reset
@@ -235,6 +245,7 @@ npm run test:coverage
 #### Issue 2: "Prisma Client not generated"
 
 **Solution**:
+
 ```bash
 npm run prisma:generate
 ```
@@ -242,6 +253,7 @@ npm run prisma:generate
 #### Issue 3: Migration conflicts
 
 **Solution**:
+
 ```bash
 # Reset database (WARNING: This will delete all data)
 npm run db:reset
@@ -255,11 +267,13 @@ npm run prisma:migrate:dev --name fix_migration_name
 When you modify the Prisma schema:
 
 1. **Create Migration**:
+
    ```bash
    npm run prisma:migrate:dev --name describe_your_changes
    ```
 
 2. **Generate Client**:
+
    ```bash
    npm run prisma:generate
    ```
@@ -308,6 +322,7 @@ npm run db:seed
 ### Issue: "Module not found" errors
 
 **Solution**: Clear node_modules and reinstall
+
 ```bash
 rm -rf node_modules package-lock.json
 npm install
@@ -316,6 +331,7 @@ npm install
 ### Issue: TypeScript errors
 
 **Solution**: Regenerate Prisma client
+
 ```bash
 npm run prisma:generate
 npm run typecheck
@@ -323,7 +339,8 @@ npm run typecheck
 
 ### Issue: Environment variables not loading
 
-**Solution**: 
+**Solution**:
+
 1. Ensure `.env.local` is in project root
 2. Restart development server
 3. Check variable names match exactly
@@ -331,6 +348,7 @@ npm run typecheck
 ### Issue: API routes returning 500 errors
 
 **Solution**:
+
 1. Check server logs: `npm run dev`
 2. Verify environment variables are set
 3. Check database connection
@@ -341,6 +359,7 @@ npm run typecheck
 ### Local Debugging
 
 1. **Check Logs**:
+
    ```bash
    npm run dev
    # Watch console for errors
@@ -372,14 +391,15 @@ npm run typecheck
 If everything breaks:
 
 1. **Reset Everything**:
+
    ```bash
    # Clean install
    rm -rf node_modules package-lock.json
    npm install
-   
+
    # Reset database
    npm run db:reset
-   
+
    # Restart dev server
    npm run dev
    ```

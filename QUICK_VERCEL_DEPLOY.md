@@ -108,6 +108,7 @@ curl -X POST https://your-project.vercel.app/api/inventory/sync \
 ## 🎯 That's It!
 
 Your app is now:
+
 - ✅ Deployed on Vercel
 - ✅ Connected to a PostgreSQL database
 - ✅ Database tables created automatically
@@ -127,16 +128,20 @@ No local setup required!
 ## 🐛 If Something Goes Wrong
 
 ### Check Vercel Logs:
+
 1. Go to Vercel Dashboard → Your Project → **Functions**
 2. Click on any failed function to see error logs
 
 ### Common Issues:
+
 - **Build fails**: Check that `DATABASE_URL` is set in environment variables
 - **Database errors**: Verify the connection string is correct
 - **API errors**: Make sure `FIO_API_KEY`, `PU_USERNAME`, and `MAINT_TOKEN` are set
 
 ### Quick Fix:
+
 If you need to make changes, just:
+
 1. Edit files in GitHub (or locally and push)
 2. Vercel redeploys automatically
 3. Check the deployment logs if there are issues

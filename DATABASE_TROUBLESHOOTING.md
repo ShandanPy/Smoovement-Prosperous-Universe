@@ -13,12 +13,14 @@ This guide addresses common database issues with the Prosperous Universe MVP app
 **Solutions**:
 
 1. **Reset and recreate database**:
+
 ```bash
 # This will delete all data and recreate the database
 npm run db:reset
 ```
 
 2. **Manual migration**:
+
 ```bash
 # Generate Prisma client
 npm run prisma:generate
@@ -31,6 +33,7 @@ npm run db:seed
 ```
 
 3. **Check database file**:
+
 ```bash
 # Verify SQLite database exists
 ls -la prisma/dev.db
@@ -46,6 +49,7 @@ npm run prisma:migrate:dev
 **Solutions**:
 
 1. **Check connection string**:
+
 ```bash
 # Verify DATABASE_URL format
 echo $DATABASE_URL
@@ -53,12 +57,14 @@ echo $DATABASE_URL
 ```
 
 2. **Deploy migrations**:
+
 ```bash
 # Deploy migrations to production
 npm run prisma:migrate
 ```
 
 3. **Verify database access**:
+
 ```bash
 # Test connection
 npx prisma db pull
@@ -69,6 +75,7 @@ npx prisma db pull
 **Problem**: Prisma client is missing or outdated.
 
 **Solution**:
+
 ```bash
 # Generate Prisma client
 npm run prisma:generate
@@ -85,6 +92,7 @@ npm run prisma:generate
 **Solutions**:
 
 1. **Reset migrations** (⚠️ This will delete all data):
+
 ```bash
 # Delete migration files
 rm -rf prisma/migrations
@@ -97,12 +105,14 @@ npm run db:seed
 ```
 
 2. **Fix specific migration**:
+
 ```bash
 # Create a new migration to fix issues
 npm run prisma:migrate:dev --name fix_migration_name
 ```
 
 3. **Manual database reset**:
+
 ```bash
 # For SQLite (local)
 rm prisma/dev.db
@@ -120,6 +130,7 @@ npm run db:seed
 **Solutions**:
 
 1. **Configure connection pooling**:
+
 ```prisma
 // prisma/schema.prisma
 datasource db {
@@ -130,6 +141,7 @@ datasource db {
 ```
 
 2. **Update database client**:
+
 ```typescript
 // lib/db.ts
 import { PrismaClient } from '@prisma/client';
@@ -153,6 +165,7 @@ if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = db;
 ```
 
 3. **Add connection limits**:
+
 ```typescript
 // lib/db.ts
 export const db = new PrismaClient({
@@ -177,6 +190,7 @@ export const db = new PrismaClient({
 ### Local Development (SQLite)
 
 1. **Initial Setup**:
+
 ```bash
 # Install dependencies
 npm install
@@ -192,6 +206,7 @@ npm run db:seed
 ```
 
 2. **Verify Setup**:
+
 ```bash
 # Check database file exists
 ls -la prisma/dev.db
@@ -201,6 +216,7 @@ npx prisma studio
 ```
 
 3. **Common Commands**:
+
 ```bash
 # Reset database (⚠️ deletes all data)
 npm run db:reset
@@ -220,6 +236,7 @@ npm run prisma:migrate:dev --name describe_changes
 1. **Database Provider Setup**:
 
 **Vercel Postgres**:
+
 ```bash
 # In Vercel dashboard:
 # 1. Go to Project → Storage
@@ -228,6 +245,7 @@ npm run prisma:migrate:dev --name describe_changes
 ```
 
 **Supabase**:
+
 ```bash
 # 1. Create project at supabase.com
 # 2. Go to Settings → Database
@@ -236,6 +254,7 @@ npm run prisma:migrate:dev --name describe_changes
 ```
 
 **Neon**:
+
 ```bash
 # 1. Create project at neon.tech
 # 2. Copy connection string
@@ -243,6 +262,7 @@ npm run prisma:migrate:dev --name describe_changes
 ```
 
 2. **Deploy to Production**:
+
 ```bash
 # Update schema for PostgreSQL
 # Change provider in prisma/schema.prisma from "sqlite" to "postgresql"
@@ -255,6 +275,7 @@ npm run prisma:generate
 ```
 
 3. **Verify Production Setup**:
+
 ```bash
 # Test connection
 npx prisma db pull
@@ -298,11 +319,11 @@ export async function testConnection() {
   try {
     await db.$connect();
     console.log('✅ Database connected successfully');
-    
+
     // Test a simple query
     const result = await db.commodity.count();
     console.log(`✅ Found ${result} commodities`);
-    
+
     await db.$disconnect();
     return true;
   } catch (error) {
@@ -333,18 +354,18 @@ import { db } from './db';
 
 export async function monitorDatabase() {
   const start = Date.now();
-  
+
   try {
     // Your database operation
     const result = await db.inventory.findMany();
-    
+
     const duration = Date.now() - start;
     console.log(`Query took ${duration}ms`);
-    
+
     if (duration > 1000) {
       console.warn('⚠️ Slow query detected');
     }
-    
+
     return result;
   } catch (error) {
     console.error('Database error:', error);
@@ -430,9 +451,9 @@ export const getCachedInventory = unstable_cache(
     });
   },
   ['inventory'],
-  { 
+  {
     revalidate: 300, // 5 minutes
-    tags: ['inventory']
+    tags: ['inventory'],
   }
 );
 ```
@@ -457,7 +478,7 @@ export async function cleanupOldData() {
   // Delete old price data (older than 30 days)
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-  
+
   await db.price.deleteMany({
     where: {
       ts: {
@@ -490,14 +511,14 @@ export async function GET() {
   try {
     // Test database connection
     await db.$connect();
-    
+
     // Test basic queries
     const commodityCount = await db.commodity.count();
     const stationCount = await db.station.count();
     const inventoryCount = await db.inventory.count();
-    
+
     await db.$disconnect();
-    
+
     return Response.json({
       status: 'healthy',
       database: 'connected',
@@ -510,7 +531,7 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Health check failed:', error);
-    
+
     return Response.json(
       {
         status: 'unhealthy',
@@ -533,14 +554,14 @@ export async function runHealthChecks() {
     { name: 'Schema Validation', test: validateSchema },
     { name: 'Query Performance', test: testQueryPerformance },
   ];
-  
+
   const results = await Promise.allSettled(
     checks.map(async (check) => {
       const result = await check.test();
       return { name: check.name, result };
     })
   );
-  
+
   return results.map((result, index) => ({
     name: checks[index].name,
     status: result.status === 'fulfilled' ? 'pass' : 'fail',

@@ -19,13 +19,13 @@ Vercel will handle everything automatically. Here's exactly what you need to do:
 
 Go to **Settings** → **Environment Variables** and add:
 
-| Name | Value | Environment |
-|------|-------|-------------|
+| Name           | Value                                                                                | Environment                      |
+| -------------- | ------------------------------------------------------------------------------------ | -------------------------------- |
 | `DATABASE_URL` | `postgres://postgres.xxx:password@aws-0-us-east-1.pooler.supabase.com:6543/postgres` | Production, Preview, Development |
-| `FIO_API_KEY` | `your_fio_api_key_here` | Production, Preview, Development |
-| `PU_USERNAME` | `your_username` | Production, Preview, Development |
-| `MAINT_TOKEN` | `prosperous-universe-maint-2024-secure-key` | Production, Preview, Development |
-| `FIO_BASE_URL` | `https://rest.fnar.net` | Production, Preview, Development |
+| `FIO_API_KEY`  | `your_fio_api_key_here`                                                              | Production, Preview, Development |
+| `PU_USERNAME`  | `your_username`                                                                      | Production, Preview, Development |
+| `MAINT_TOKEN`  | `prosperous-universe-maint-2024-secure-key`                                          | Production, Preview, Development |
+| `FIO_BASE_URL` | `https://rest.fnar.net`                                                              | Production, Preview, Development |
 
 ### 3. **Deploy**
 
@@ -50,6 +50,7 @@ When you push to GitHub, Vercel will:
 ## 🧪 **Test Your App**
 
 Once deployed, visit:
+
 - **Home**: `https://your-project.vercel.app`
 - **Inventory**: `https://your-project.vercel.app/inventory`
 - **API Test**: `https://your-project.vercel.app/api/ping`
