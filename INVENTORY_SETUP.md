@@ -59,12 +59,20 @@ This should return JSON data with inventory items including:
 
 ### 5. Test Sync Functionality
 
-To sync real inventory data (requires proper environment variables):
+You can sync your inventory in two ways:
 
+1. **Using the UI (Recommended):**
+   - Navigate to the inventory page
+   - Click the "🔄 Sync from FIO" button
+   - Wait for the sync to complete
+
+2. **Using the command line:**
 ```bash
 curl -X POST http://localhost:3000/api/inventory/sync \
   -H "x-maint-token: $MAINT_TOKEN"
 ```
+
+The inventory data is fetched from the FIO API at: https://rest.fnar.net
 
 ## Testing Features
 

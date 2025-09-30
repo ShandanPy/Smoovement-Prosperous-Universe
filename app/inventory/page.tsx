@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   useReactTable,
   getCoreRowModel,
@@ -12,6 +13,79 @@ import {
   ColumnFiltersState,
 } from '@tanstack/react-table';
 import { useInventory, type InventoryItem } from '@/lib/hooks/useInventory';
+
+function SyncInventoryButton() {
+  const queryClient = useQueryClient();
+  const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null);
+  
+  const syncMutation = useMutation({
+    mutationFn: async () => {
+      // Note: In a real app, you'd get the token from a secure place
+      // For now, we'll need to pass it somehow (see security note below)
+      const response = await fetch('/api/inventory/sync', {
+        method: 'POST',
+        headers: {
+          'x-maint-token': process.env.NEXT_PUBLIC_MAINT_TOKEN || '',
+        },
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Sync failed');
+      }
+      
+      return response.json();
+    },
+    onSuccess: (data) => {
+      // Invalidate and refetch inventory data
+      queryClient.invalidateQueries({ queryKey: ['inventory'] });
+      setLastSyncTime(new Date());
+      console.log(`✅ Synced ${data.updated} inventory items from FIO`);
+    },
+  });
+
+  return (
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
+      <button
+        onClick={() => syncMutation.mutate()}
+        disabled={syncMutation.isPending}
+        className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+      >
+        {syncMutation.isPending ? (
+          <>
+            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+            </svg>
+            Syncing from FIO...
+          </>
+        ) : (
+          <>
+            🔄 Sync from FIO
+          </>
+        )}
+      </button>
+      
+      {lastSyncTime && (
+        <span className="text-sm text-gray-600">
+          Last synced: {lastSyncTime.toLocaleTimeString()}
+        </span>
+      )}
+      
+      {syncMutation.isError && (
+        <div className="text-sm text-red-600 bg-red-50 px-3 py-2 rounded-md">
+          ❌ {syncMutation.error instanceof Error ? syncMutation.error.message : 'Sync failed'}
+        </div>
+      )}
+      
+      {syncMutation.isSuccess && syncMutation.data && (
+        <div className="text-sm text-green-600 bg-green-50 px-3 py-2 rounded-md">
+          ✅ Synced {syncMutation.data.updated} items
+        </div>
+      )}
+    </div>
+  );
+}
 
 const columnHelper = createColumnHelper<InventoryItem>();
 
@@ -125,14 +199,14 @@ export default function InventoryPage() {
             <div className="text-center">
               <div className="text-gray-400 text-6xl mb-4">📦</div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">No Inventory Yet</h2>
-              <p className="text-gray-600 mb-4">
-                Run the inventory sync to populate this table with your station data.
+              <p className="text-gray-600 mb-6">
+                Click the button below to sync your inventory from FIO.
               </p>
-              <div className="bg-gray-100 rounded-lg p-4 text-left max-w-md mx-auto">
-                <p className="text-sm text-gray-700 mb-2">To sync inventory, run:</p>
+              <SyncInventoryButton />
+              <div className="mt-6 bg-gray-100 rounded-lg p-4 text-left max-w-md mx-auto">
+                <p className="text-sm text-gray-700 mb-2">Or sync via command line:</p>
                 <code className="text-xs bg-gray-200 px-2 py-1 rounded block">
-                  curl -X POST http://localhost:3000/api/inventory/sync -H &quot;x-maint-token:
-                  $MAINT_TOKEN&quot;
+                  curl -X POST http://localhost:3000/api/inventory/sync -H "x-maint-token: $MAINT_TOKEN"
                 </code>
               </div>
             </div>
@@ -147,10 +221,15 @@ export default function InventoryPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white shadow rounded-lg">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-gray-900">Inventory</h1>
-            <p className="text-gray-600 mt-1">
-              {inventory.length} item{inventory.length !== 1 ? 's' : ''} across your stations
-            </p>
+            <div className="flex justify-between items-start">
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Inventory</h1>
+                <p className="text-gray-600 mt-1">
+                  {inventory.length} item{inventory.length !== 1 ? 's' : ''} across your stations
+                </p>
+              </div>
+              <SyncInventoryButton />
+            </div>
           </div>
 
           <div className="p-6">
