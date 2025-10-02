@@ -6,77 +6,90 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model Commodity {
-  id       String  @id @default(cuid())
-  symbol   String  @unique
-  name     String
-  category String?
+  id        String   @id @default(uuid()) @db.Uuid
+  ticker    String   @unique
+  name      String
+  category  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
-  prices    Price[]
-  inventory Inventory[]
+  inventoryItems   InventoryItem[]
+  productionOrders ProductionOrder[]
+  prices           Price[]
 
-  @@map("commodities")
+  @@index([ticker])
 }
 
-model Station {
-  id     String  @id @default(cuid())
-  code   String  @unique
-  name   String
-  planet String?
-  system String?
+model Base {
+  id           String    @id @default(uuid()) @db.Uuid
+  planetId     String    @unique
+  planetName   String
+  username     String
+  lastSyncedAt DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
   // Relations
-  prices    Price[]
-  inventory Inventory[]
+  inventoryItems   InventoryItem[]
+  productionOrders ProductionOrder[]
 
-  @@map("stations")
+  @@index([planetId])
+  @@index([username])
 }
 
-model Price {
-  id          String   @id @default(cuid())
-  stationId   String
-  commodityId String
-  ask         Decimal?
-  bid         Decimal?
-  ts          DateTime @default(now())
+model InventoryItem {
+  id               String   @id @default(uuid()) @db.Uuid
+  baseId           String   @db.Uuid
+  commodityTicker  String
+  quantity         Int
+  updatedAt        DateTime @updatedAt
 
   // Relations
-  station   Station   @relation(fields: [stationId], references: [id], onDelete: Cascade)
-  commodity Commodity @relation(fields: [commodityId], references: [id], onDelete: Cascade)
+  base      Base      @relation(fields: [baseId], references: [id], onDelete: Cascade)
+  commodity Commodity @relation(fields: [commodityTicker], references: [ticker], onDelete: Cascade)
 
-  @@unique([stationId, commodityId])
-  @@map("prices")
+  @@unique([baseId, commodityTicker])
+  @@index([baseId])
+  @@index([commodityTicker])
 }
 
 model ProductionOrder {
-  id             String   @id @default(cuid())
-  baseCode       String
-  building       String
-  recipe         String
-  qtyPerBatch    Int
-  cycleSeconds   Int
-  efficiencyPct  Int      @default(100)
-  updatedAt      DateTime @updatedAt
-
-  @@map("production_orders")
-}
-
-model Inventory {
-  id          String   @id @default(cuid())
-  stationId   String
-  commodityId String
-  qty         Decimal
-  updatedAt   DateTime @updatedAt
+  id               String   @id @default(uuid()) @db.Uuid
+  baseId           String   @db.Uuid
+  commodityTicker  String
+  quantity         Int
+  durationMs       Int
+  startedAt        DateTime
+  completesAt      DateTime
+  isComplete       Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
   // Relations
-  station   Station   @relation(fields: [stationId], references: [id])
-  commodity Commodity @relation(fields: [commodityId], references: [id])
+  base      Base      @relation(fields: [baseId], references: [id], onDelete: Cascade)
+  commodity Commodity @relation(fields: [commodityTicker], references: [ticker], onDelete: Cascade)
 
-  @@unique([stationId, commodityId])
-  @@map("inventory")
+  @@index([baseId])
+  @@index([commodityTicker])
+}
+
+model Price {
+  id               String   @id @default(uuid()) @db.Uuid
+  commodityTicker  String
+  exchange         String
+  buyPrice         Decimal? @db.Decimal(20, 10)
+  sellPrice        Decimal? @db.Decimal(20, 10)
+  updatedAt        DateTime @updatedAt
+
+  // Relations
+  commodity Commodity @relation(fields: [commodityTicker], references: [ticker], onDelete: Cascade)
+
+  @@unique([commodityTicker, exchange])
+  @@index([commodityTicker])
 }
